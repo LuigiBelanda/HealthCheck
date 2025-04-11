@@ -7,7 +7,7 @@ Aplicação desenvolvida para a disciplina de Laboratório de Engenharia de Soft
 ## 🚀 Tecnologias
 - Frontend: 📱 Flutter
 - Backend: ☕ Java / Spring Boot
-- Banco de Dados: 🗄️ MySQL
+- Banco de Dados: 🗄️ PostgreSQL
 
 <br>
 

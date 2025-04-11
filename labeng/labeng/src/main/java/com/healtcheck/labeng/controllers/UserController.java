@@ -1,7 +1,7 @@
 package com.healtcheck.labeng.controllers;
 
-import com.healtcheck.labeng.dto.UserLoginDTO;
-import com.healtcheck.labeng.dto.UserRegisterDTO;
+import com.healtcheck.labeng.dtos.UserLoginDTO;
+import com.healtcheck.labeng.dtos.UserRegisterDTO;
 import com.healtcheck.labeng.entities.User;
 import com.healtcheck.labeng.services.UserService;
 import jakarta.validation.Valid;

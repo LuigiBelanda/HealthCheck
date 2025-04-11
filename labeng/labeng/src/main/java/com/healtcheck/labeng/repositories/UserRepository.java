@@ -12,7 +12,7 @@ automaticamente implementa os métodos básicos pra você. Ou seja:
 Você escreve a interface, o Spring escreve a implementação mágica por trás.
 */
 
-package com.healtcheck.labeng.repository;
+package com.healtcheck.labeng.repositories;
 
 import com.healtcheck.labeng.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,0 +1,574 @@
+type: collection.insomnia.rest/5.0
+name: HealthCheck
+meta:
+  id: wrk_6e12c6fc8eea44feb385392af5482c66
+  created: 1743948247724
+  modified: 1743948247724
+collection:
+  - url: "{{ _.base_url }}/user/register"
+    name: 1 - Criando usuário 1
+    meta:
+      id: req_8594502f4c784f03b33ba2c1e9aa214c
+      created: 1743948256462
+      modified: 1744329683778
+      isPrivate: false
+      sortKey: -1743948256462
+    method: POST
+    body:
+      mimeType: application/json
+      text: |
+        {
+          "name": "Welder",
+          "email": "welder@example.com",
+          "password": "senha123",
+        	"city": "Itapolis"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.0.2
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: "{{ _.base_url }}/user/login"
+    name: 6 - Login usuario 1
+    meta:
+      id: req_bde23ff65ff241d1a361aea5347a385e
+      created: 1743948457627
+      modified: 1743955244068
+      isPrivate: false
+      sortKey: -1742433400436.5
+    method: POST
+    body:
+      mimeType: application/json
+      text: |
+        {
+          "email": "welder@example.com",
+          "password": "senha123"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.0.2
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: "{{ _.base_url }}/user/register"
+    name: 5 - TEST - Criação duplicada usuário 1
+    meta:
+      id: req_4fbee13404b648adb1f9bde24ea14685
+      created: 1743948591448
+      modified: 1743955237796
+      isPrivate: false
+      sortKey: -1743190828449.25
+    method: POST
+    body:
+      mimeType: application/json
+      text: |
+        {
+          "name": "Welder",
+          "email": "welder@example.com",
+          "password": "senha123",
+        	"city": "Itapolis"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.0.2
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: "{{ _.base_url }}/user/login"
+    name: 7 - TEST - Email errado login usuario 1
+    meta:
+      id: req_fd54964a077e4c96a884bc85e61fae5d
+      created: 1743948610733
+      modified: 1744330784301
+      isPrivate: false
+      sortKey: -1741675972423.75
+    method: POST
+    body:
+      mimeType: application/json
+      text: |
+        {
+          "email": "welder@example.coom",
+          "password": "senha123"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.0.2
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: "{{ _.base_url }}/user/login"
+    name: 8 - TEST - Senha errada login usuario 1
+    meta:
+      id: req_c1a121e917da462c87a8acf6c83ca300
+      created: 1743950448404
+      modified: 1744330792421
+      isPrivate: false
+      sortKey: -1741297258417.375
+    method: POST
+    body:
+      mimeType: application/json
+      text: |
+        {
+          "email": "welder@example.com",
+          "password": "senha111111"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.0.2
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: "{{ _.base_url }}/user/register"
+    name: 2 - Criando usuário 2
+    meta:
+      id: req_fbb83188802a4f64a5907f699a5c7b5f
+      created: 1743954993132
+      modified: 1744330722043
+      isPrivate: false
+      sortKey: -1743569542455.625
+    method: POST
+    body:
+      mimeType: application/json
+      text: |
+        {
+          "name": "Luigi",
+          "email": "luigi@example.com",
+          "password": "12345678",
+        	"city": "Itapolis"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.0.2
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: "{{ _.base_url }}/user/register"
+    name: 3 - Criando usuário 3
+    meta:
+      id: req_ab5bc4546789483a9d46d2e3b38cc30f
+      created: 1743954998014
+      modified: 1744330729005
+      isPrivate: false
+      sortKey: -1743380185452.4375
+    method: POST
+    body:
+      mimeType: application/json
+      text: |
+        {
+          "name": "Gabriel",
+          "email": "gabriel@example.com",
+          "password": "ga1234ga",
+        	"city": "Ibitinga"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.0.2
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: "{{ _.base_url }}/user/register"
+    name: 4 - Criando usuário 4
+    meta:
+      id: req_f8d1919811514547970eb6590dfdd398
+      created: 1743955067859
+      modified: 1743955230228
+      isPrivate: false
+      sortKey: -1743285506950.8438
+    method: POST
+    body:
+      mimeType: application/json
+      text: |
+        {
+          "name": "Francisco",
+          "email": "francisco@example.com",
+          "password": "francisco",
+        	"city": "Monte Alto"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.0.2
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: "{{ _.base_url }}/user/register"
+    name: 9 - TEST - Senha menos que 8 caracteres
+    meta:
+      id: req_cb0ea80798f44322a7a2ed203a17c7b6
+      created: 1744330817369
+      modified: 1744330879031
+      isPrivate: false
+      sortKey: -1741107901414.1875
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "name": "Welder",
+          "email": "welder@example.com",
+          "password": "senha",
+        	"city": "Itapolis"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.0.2
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: "{{ _.base_url }}/user/register"
+    name: 12 - TEST - Formato de email errado
+    meta:
+      id: req_8488f4fea061413da7c637bc7b79754e
+      created: 1744330894293
+      modified: 1744331155361
+      isPrivate: false
+      sortKey: -1741013222912.5938
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "name": "Welder",
+          "email": "welder@@example.com",
+          "password": "senha123",
+        	"city": "Itapolis"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.0.2
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: "{{ _.base_url }}/user/register"
+    name: 13 - TEST - Nome nulo
+    meta:
+      id: req_956ff8d82d7e4c09bd8eb4408596c2b3
+      created: 1744330943293
+      modified: 1744331159991
+      isPrivate: false
+      sortKey: -1740965883661.7969
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "name": null,
+          "email": "welder@example.com",
+          "password": "senha123",
+        	"city": "Itapolis"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.0.2
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: "{{ _.base_url }}/user/register"
+    name: 14 - TEST - Nome vazio
+    meta:
+      id: req_190b3876adae4e5db9fec71c1a0d2605
+      created: 1744330963894
+      modified: 1744331165416
+      isPrivate: false
+      sortKey: -1740942214036.3984
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "name": "",
+          "email": "welder@example.com",
+          "password": "senha123",
+        	"city": "Itapolis"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.0.2
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: "{{ _.base_url }}/user/register"
+    name: 15 - TEST - Email vazio
+    meta:
+      id: req_f2b262d51af24ca5a89a542032df12cb
+      created: 1744330981463
+      modified: 1744331170681
+      isPrivate: false
+      sortKey: -1740930379223.6992
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "name": "Welder",
+          "email": "",
+          "password": "senha123",
+        	"city": "Itapolis"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.0.2
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: "{{ _.base_url }}/user/register"
+    name: 16 - TEST - Email nulo
+    meta:
+      id: req_c4d293538f9b4a009cbc2c4bdafd4084
+      created: 1744331000840
+      modified: 1744331178448
+      isPrivate: false
+      sortKey: -1740924461817.3496
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "name": "Welder",
+          "email": null,
+          "password": "senha123",
+        	"city": "Itapolis"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.0.2
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: "{{ _.base_url }}/user/register"
+    name: 10 - TEST - Senha vazia
+    meta:
+      id: req_04792eb1f9b54fb79bd016deaaf37c63
+      created: 1744331040982
+      modified: 1744331139530
+      isPrivate: false
+      sortKey: -1741060562163.3906
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "name": "Welder",
+          "email": "welder@example.com",
+          "password": "",
+        	"city": "Itapolis"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.0.2
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: "{{ _.base_url }}/user/register"
+    name: 11 - TEST - Senha nula
+    meta:
+      id: req_86b9c552ddb343789cf49b93683e175b
+      created: 1744331067682
+      modified: 1744331147462
+      isPrivate: false
+      sortKey: -1741036892537.9922
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "name": "Welder",
+          "email": "welder@example.com",
+          "password": null,
+        	"city": "Itapolis"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.0.2
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: "{{ _.base_url }}/user/register"
+    name: 17 - TEST - Cidade vazia
+    meta:
+      id: req_a739505b654c4209afd14da621d37e64
+      created: 1744331098112
+      modified: 1744331185073
+      isPrivate: false
+      sortKey: -1740921503114.1748
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "name": "Welder",
+          "email": "wleder@example.com",
+          "password": "senha123",
+        	"city": ""
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.0.2
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: "{{ _.base_url }}/user/register"
+    name: 18 - TEST - Cidade nula
+    meta:
+      id: req_e113b3c27f4c4e128412da4e4a1c6523
+      created: 1744331103118
+      modified: 1744331195072
+      isPrivate: false
+      sortKey: -1740920023762.5874
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "name": "Welder",
+          "email": "wleder@example.com",
+          "password": "senha123",
+        	"city": null
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.0.2
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_dff345144f5b27d28361764ce6b58a0ef8deefbe
+    created: 1743948247729
+    modified: 1743948247729
+environments:
+  name: Base Environment
+  meta:
+    id: env_dff345144f5b27d28361764ce6b58a0ef8deefbe
+    created: 1743948247728
+    modified: 1743954767184
+    isPrivate: false
+  data:
+    base_url: http://localhost:8080

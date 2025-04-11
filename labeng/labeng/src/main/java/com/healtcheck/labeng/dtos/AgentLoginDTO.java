@@ -7,7 +7,7 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserLoginDTO {
+public class AgentLoginDTO {
     @NotBlank(message = "Email não pode estar vazio")
     @Email(message = "Formato de email inválido")
     private String email;

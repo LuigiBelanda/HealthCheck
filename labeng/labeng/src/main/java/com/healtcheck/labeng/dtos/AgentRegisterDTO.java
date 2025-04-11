@@ -9,7 +9,7 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserRegisterDTO {
+public class AgentRegisterDTO {
     @NotNull(message = "Nome não pode ser nulo")
     @NotBlank(message = "Nome não pode estar vazio")
     private String name;

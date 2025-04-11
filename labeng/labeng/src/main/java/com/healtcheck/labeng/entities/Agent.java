@@ -4,11 +4,11 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "tb_users")
+@Table(name = "tb_agents")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class Agent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

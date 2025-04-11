@@ -14,20 +14,20 @@ Você escreve a interface, o Spring escreve a implementação mágica por trás.
 
 package com.healtcheck.labeng.repositories;
 
-import com.healtcheck.labeng.entities.User;
+import com.healtcheck.labeng.entities.Agent;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-// Aqui estamos dizendo que a interface UserRepository vai herdar (ou estender)
+// Aqui estamos dizendo que a interface AgentRepository vai herdar (ou estender)
 // as funcionalidades do JpaRepository. Isso significa que já teremos vários
 // métodos prontos para salvar, buscar, deletar e atualizar usuários no banco de dados.
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface AgentRepository extends JpaRepository<Agent, Long> {
     // Este método é usado para buscar um usuário no banco de dados pelo e-mail.
-    // Ele retorna um Optional<User>, o que quer dizer que o resultado pode ser:
+    // Ele retorna um Optional<Agent>, o que quer dizer que o resultado pode ser:
     // - Um usuário encontrado com aquele e-mail, ou
     // - Nada (caso não exista nenhum usuário com aquele e-mail).
     // findByEmail(String email) → O Spring vê esse nome e
     // entende que você quer buscar um usuário pelo campo email. Ele cria o SQL internamente!
-    Optional<User> findByEmail(String email);
+    Optional<Agent> findByEmail(String email);
 }

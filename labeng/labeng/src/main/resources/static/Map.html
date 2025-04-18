@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mapa de Casos de Doenças</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        #map {
+            width: 100%;
+            height: 100vh;
+        }
+        .legend {
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+        }
+        .legend h4 {
+            margin: 0 0 10px;
+            font-size: 16px;
+        }
+        .legend .marker-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        .legend .marker-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        .legend .dengue { background-color: #ff0000; }
+        .legend .zika { background-color: #ffcc00; }
+        .legend .covid { background-color: #00cc00; }
+        .legend .outros { background-color: #0000ff; }
+
+        .filters-panel {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 1000;
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            width: 250px;
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+        }
+
+        .filters-panel h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+
+        .filter-group {
+            margin-bottom: 15px;
+        }
+
+        .filter-group h4 {
+            margin: 0 0 8px 0;
+        }
+
+        .filter-group .filter-option {
+            margin-bottom: 5px;
+        }
+
+        .filter-group select {
+            width: 100%;
+            padding: 5px;
+            border-radius: 3px;
+            border: 1px solid #ccc;
+        }
+
+        .filter-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 8px 12px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+
+        button.reset {
+            background-color: #f44336;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .checkbox-container input {
+            margin-right: 5px;
+        }
+
+        #date-range {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        #date-range input {
+            width: 45%;
+        }
+
+        .toggle-filters {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 1001;
+            padding: 8px 12px;
+            background-color: white;
+            border: none;
+            border-radius: 3px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.3);
+            cursor: pointer;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<button id="toggle-filters" class="toggle-filters">☰ Filtros</button>
+
+<div id="filters-panel" class="filters-panel">
+    <h3>Filtros</h3>
+
+    <div class="filter-group">
+        <h4>Doenças</h4>
+        <div id="disease-filters">
+            <!-- Será preenchido dinamicamente -->
+        </div>
+    </div>
+
+    <div class="filter-group">
+        <h4>Cidade</h4>
+        <select id="city-filter">
+            <option value="">Todas as cidades</option>
+            <!-- Será preenchido dinamicamente -->
+        </select>
+    </div>
+
+    <div class="filter-group">
+        <h4>Bairro</h4>
+        <select id="neighborhood-filter">
+            <option value="">Todos os bairros</option>
+            <!-- Será preenchido dinamicamente -->
+        </select>
+    </div>
+
+    <div class="filter-group">
+        <h4>Período</h4>
+        <div id="date-range">
+            <input type="date" id="start-date" placeholder="Data inicial">
+            <input type="date" id="end-date" placeholder="Data final">
+        </div>
+    </div>
+
+    <button id="apply-filters">Aplicar Filtros</button>
+    <button id="reset-filters" class="reset">Limpar Filtros</button>
+</div>
+
+<div id="map"></div>
+
+<!-- Leaflet JavaScript -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+    // Inicializa o mapa centralizando na posição padrão (Brasil)
+    var map = L.map('map').setView([-15.77972, -47.92972], 5);
+
+    // Adiciona a camada de mapa do OpenStreetMap
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    // Variáveis globais
+    let allCases = [];
+    let markers = L.layerGroup().addTo(map);
+    let activeFilters = {
+        diseases: [],
+        city: '',
+        neighborhood: '',
+        startDate: '',
+        endDate: ''
+    };
+
+    // Configuração de cores por doença
+    const diseaseColors = {
+        'dengue': '#ff0000',     // Vermelho
+        'zika': '#ffcc00',       // Amarelo
+        'covid': '#00cc00',      // Verde
+        'covid-19': '#00cc00',   // Verde (alias)
+        'coronavirus': '#00cc00' // Verde (alias)
+    };
+
+    // Função para determinar a cor com base na doença
+    function getDiseaseColor(disease) {
+        const diseaseLower = disease.toLowerCase().trim();
+        return diseaseColors[diseaseLower] || '#0000ff'; // Azul como cor padrão
+    }
+
+    // Função para criar um ícone personalizado com a cor da doença e sombra
+    function createDiseaseIcon(color) {
+        return L.divIcon({
+            className: 'custom-div-icon',
+            html: `<div style="background-color: ${color}; width: 15px; height: 15px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 0 10px 50px ${color}80;"></div>`,
+            iconSize: [30, 30],
+            iconAnchor: [15, 15],
+            popupAnchor: [0, -15]
+        });
+    }
+
+    // Função para carregar os casos da API
+    async function loadCases() {
+        try {
+            const response = await fetch('http://localhost:8080/api/cases');
+            allCases = await response.json();
+
+            // Extrair valores únicos para os filtros
+            setupFilters(allCases);
+
+            // Adicionar os marcadores ao mapa
+            displayCases(allCases);
+
+            // Adiciona a legenda ao mapa
+            addLegend();
+
+        } catch (error) {
+            console.error('Erro ao carregar casos:', error);
+        }
+    }
+
+    // Função para configurar os filtros com valores únicos
+    function setupFilters(cases) {
+        const diseases = new Set();
+        const cities = new Set();
+        const neighborhoods = new Set();
+
+        cases.forEach(case_item => {
+            if (case_item.disease) diseases.add(case_item.disease);
+            if (case_item.city) cities.add(case_item.city);
+            if (case_item.neighborhood) neighborhoods.add(case_item.neighborhood);
+        });
+
+        // Preencher o filtro de doenças
+        const diseaseFiltersContainer = document.getElementById('disease-filters');
+        diseaseFiltersContainer.innerHTML = '';
+
+        // Opção "Todas as doenças"
+        const allDiseaseDiv = document.createElement('div');
+        allDiseaseDiv.className = 'filter-option checkbox-container';
+        allDiseaseDiv.innerHTML = `
+            <input type="checkbox" id="all-diseases" checked>
+            <label for="all-diseases">Todas as doenças</label>
+        `;
+        diseaseFiltersContainer.appendChild(allDiseaseDiv);
+
+        // Cada doença individual
+        diseases.forEach(disease => {
+            const color = getDiseaseColor(disease);
+            const div = document.createElement('div');
+            div.className = 'filter-option checkbox-container';
+            div.innerHTML = `
+                <input type="checkbox" class="disease-checkbox" value="${disease}" checked>
+                <span style="background-color: ${color}; width: 12px; height: 12px; display: inline-block; border-radius: 50%; margin-right: 5px;"></span>
+                <label>${disease}</label>
+            `;
+            diseaseFiltersContainer.appendChild(div);
+        });
+
+        // Configurar evento para o checkbox "Todas as doenças"
+        const allDiseasesCheckbox = document.getElementById('all-diseases');
+        const diseaseCheckboxes = document.getElementsByClassName('disease-checkbox');
+
+        allDiseasesCheckbox.addEventListener('change', function() {
+            const checked = this.checked;
+            Array.from(diseaseCheckboxes).forEach(checkbox => {
+                checkbox.checked = checked;
+            });
+        });
+
+        // Quando um checkbox individual muda, verifica se todos estão marcados
+        Array.from(diseaseCheckboxes).forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const allChecked = Array.from(diseaseCheckboxes).every(cb => cb.checked);
+                allDiseasesCheckbox.checked = allChecked;
+            });
+        });
+
+        // Preencher filtro de cidades
+        const cityFilter = document.getElementById('city-filter');
+        cities.forEach(city => {
+            const option = document.createElement('option');
+            option.value = city;
+            option.textContent = city;
+            cityFilter.appendChild(option);
+        });
+
+        // Preencher filtro de bairros
+        const neighborhoodFilter = document.getElementById('neighborhood-filter');
+        neighborhoods.forEach(neighborhood => {
+            const option = document.createElement('option');
+            option.value = neighborhood;
+            option.textContent = neighborhood;
+            neighborhoodFilter.appendChild(option);
+        });
+
+        // Configurar o filtro de bairros para atualizar com base na cidade selecionada
+        cityFilter.addEventListener('change', function() {
+            const selectedCity = this.value;
+            const relevantNeighborhoods = new Set();
+
+            cases.forEach(case_item => {
+                if (!selectedCity || case_item.city === selectedCity) {
+                    if (case_item.neighborhood) relevantNeighborhoods.add(case_item.neighborhood);
+                }
+            });
+
+            // Limpar e repopular o dropdown de bairros
+            neighborhoodFilter.innerHTML = '<option value="">Todos os bairros</option>';
+            relevantNeighborhoods.forEach(neighborhood => {
+                const option = document.createElement('option');
+                option.value = neighborhood;
+                option.textContent = neighborhood;
+                neighborhoodFilter.appendChild(option);
+            });
+        });
+    }
+
+    // Função para exibir os casos no mapa com filtros aplicados
+    function displayCases(cases) {
+        // Limpar marcadores existentes
+        markers.clearLayers();
+
+        // Filtrar os casos conforme os filtros ativos
+        const filteredCases = filterCases(cases);
+
+        // Adicionar marcadores para os casos filtrados
+        filteredCases.forEach(case_item => {
+            if (case_item.latitude && case_item.longitude) {
+                const lat = parseFloat(case_item.latitude);
+                const lng = parseFloat(case_item.longitude);
+
+                // Determina a cor com base na doença
+                const color = getDiseaseColor(case_item.disease);
+
+                // Cria o marcador com o ícone personalizado
+                const marker = L.marker([lat, lng], {
+                    icon: createDiseaseIcon(color)
+                }).bindPopup(`
+                    <h3>${case_item.disease}</h3>
+                    <b>Endereço:</b> ${case_item.street}, ${case_item.number}<br>
+                    <b>Bairro:</b> ${case_item.neighborhood}<br>
+                    <b>Cidade:</b> ${case_item.city}, ${case_item.state}<br>
+                    <b>Data de Registro:</b> ${new Date(case_item.registrationDate).toLocaleDateString()}
+                `);
+
+                markers.addLayer(marker);
+            }
+        });
+
+        // Atualizar contagem de casos encontrados
+        document.getElementById('filters-panel').querySelector('h3').textContent =
+            `Filtros (${filteredCases.length} casos)`;
+
+        // Ajustar a visualização do mapa se houver marcadores
+        if (filteredCases.length > 0) {
+            const group = L.featureGroup(markers.getLayers());
+            map.fitBounds(group.getBounds(), { padding: [50, 50] });
+        }
+    }
+
+    // Função para filtrar os casos com base nas seleções
+    function filterCases(cases) {
+        return cases.filter(case_item => {
+            // Filtro por doença
+            if (activeFilters.diseases.length > 0 &&
+                !activeFilters.diseases.includes(case_item.disease)) {
+                return false;
+            }
+
+            // Filtro por cidade
+            if (activeFilters.city && case_item.city !== activeFilters.city) {
+                return false;
+            }
+
+            // Filtro por bairro
+            if (activeFilters.neighborhood && case_item.neighborhood !== activeFilters.neighborhood) {
+                return false;
+            }
+
+            // Filtro por data
+            if (activeFilters.startDate || activeFilters.endDate) {
+                const caseDate = new Date(case_item.registrationDate);
+
+                if (activeFilters.startDate) {
+                    const startDate = new Date(activeFilters.startDate);
+                    if (caseDate < startDate) return false;
+                }
+
+                if (activeFilters.endDate) {
+                    const endDate = new Date(activeFilters.endDate);
+                    // Adiciona um dia ao final para incluir todo o dia final
+                    endDate.setDate(endDate.getDate() + 1);
+                    if (caseDate > endDate) return false;
+                }
+            }
+
+            return true;
+        });
+    }
+
+    // Função para adicionar a legenda
+    function addLegend() {
+        const legend = L.control({ position: 'bottomright' });
+
+        legend.onAdd = function() {
+            const div = L.DomUtil.create('div', 'legend');
+            div.innerHTML = `
+                <h4>Legenda</h4>
+                <div class="marker-item">
+                    <div class="marker-color dengue"></div>
+                    <span>Dengue</span>
+                </div>
+                <div class="marker-item">
+                    <div class="marker-color zika"></div>
+                    <span>Zika</span>
+                </div>
+                <div class="marker-item">
+                    <div class="marker-color covid"></div>
+                    <span>Covid-19</span>
+                </div>
+                <div class="marker-item">
+                    <div class="marker-color outros"></div>
+                    <span>Outras doenças</span>
+                </div>
+            `;
+            return div;
+        };
+
+        legend.addTo(map);
+    }
+
+    // Configurar eventos de botões
+    document.getElementById('apply-filters').addEventListener('click', function() {
+        // Coletar doenças selecionadas
+        const diseaseCheckboxes = document.getElementsByClassName('disease-checkbox');
+        const selectedDiseases = [];
+
+        Array.from(diseaseCheckboxes).forEach(checkbox => {
+            if (checkbox.checked) {
+                selectedDiseases.push(checkbox.value);
+            }
+        });
+
+        // Atualizar filtros ativos
+        activeFilters.diseases = selectedDiseases;
+        activeFilters.city = document.getElementById('city-filter').value;
+        activeFilters.neighborhood = document.getElementById('neighborhood-filter').value;
+        activeFilters.startDate = document.getElementById('start-date').value;
+        activeFilters.endDate = document.getElementById('end-date').value;
+
+        // Atualizar o mapa
+        displayCases(allCases);
+    });
+
+    document.getElementById('reset-filters').addEventListener('click', function() {
+        // Resetar todos os campos de filtro
+        document.getElementById('all-diseases').checked = true;
+        Array.from(document.getElementsByClassName('disease-checkbox')).forEach(cb => {
+            cb.checked = true;
+        });
+
+        document.getElementById('city-filter').value = '';
+        document.getElementById('neighborhood-filter').value = '';
+        document.getElementById('start-date').value = '';
+        document.getElementById('end-date').value = '';
+
+        // Limpar filtros ativos
+        activeFilters.diseases = [];
+        activeFilters.city = '';
+        activeFilters.neighborhood = '';
+        activeFilters.startDate = '';
+        activeFilters.endDate = '';
+
+        // Recarregar o mapa com todos os casos
+        displayCases(allCases);
+    });
+
+    // Botão para alternar visibilidade do painel de filtros em telas pequenas
+    const toggleButton = document.getElementById('toggle-filters');
+    const filtersPanel = document.getElementById('filters-panel');
+
+    toggleButton.addEventListener('click', function() {
+        if (filtersPanel.style.display === 'none') {
+            filtersPanel.style.display = 'block';
+            toggleButton.textContent = '× Fechar';
+        } else {
+            filtersPanel.style.display = 'none';
+            toggleButton.textContent = '☰ Filtros';
+        }
+    });
+
+    // Responsividade: ocultar o painel em telas pequenas
+    function handleResize() {
+        if (window.innerWidth < 768) {
+            filtersPanel.style.display = 'none';
+            toggleButton.style.display = 'block';
+            toggleButton.textContent = '☰ Filtros';
+        } else {
+            filtersPanel.style.display = 'block';
+            toggleButton.style.display = 'none';
+        }
+    }
+
+    window.addEventListener('resize', handleResize);
+
+    // Carrega os casos quando a página iniciar
+    document.addEventListener('DOMContentLoaded', function() {
+        loadCases();
+        handleResize();
+    });
+</script>
+</body>
+</html>

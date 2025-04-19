@@ -12,6 +12,7 @@ import com.healtcheck.labeng.repositories.AgentRepository;
 import com.healtcheck.labeng.repositories.CaseRepository;
 import com.healtcheck.labeng.services.CaseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriUtils;
 
@@ -24,10 +25,8 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-
 @Service
 public class CaseServiceImpl implements CaseService {
-    private static final String GEOAPIFY_API_KEY = "9ddf24376acc4b098bfe7c1515e311d5";
     private static final String GEOAPIFY_API_URL = "https://api.geoapify.com/v1/geocode/search";
 
     @Autowired
@@ -38,6 +37,9 @@ public class CaseServiceImpl implements CaseService {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Value("${geoapify.api.key}")
+    private String geoapifyApiKey;
 
     @Override
     public Case register(CaseRegisterDTO caseRegisterDTO) {
@@ -100,7 +102,7 @@ public class CaseServiceImpl implements CaseService {
     private GeoCoordinates getCoordinatesFromAddress(String address) throws IOException {
         // Codifica o endereço para URL
         String encodedAddress = UriUtils.encodeQueryParam(address, StandardCharsets.UTF_8);
-        String urlString = String.format("%s?text=%s&apiKey=%s", GEOAPIFY_API_URL, encodedAddress, GEOAPIFY_API_KEY);
+        String urlString = String.format("%s?text=%s&apiKey=%s", GEOAPIFY_API_URL, encodedAddress, geoapifyApiKey);
 
         // Cria a conexão HTTP
         URL url = new URL(urlString);

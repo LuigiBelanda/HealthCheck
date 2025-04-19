@@ -45,10 +45,10 @@ public class Case {
     @Column(nullable = false)
     private LocalDateTime registrationDate;
 
-    @Column
+    @Column(nullable = false)
     private String longitude;
 
-    @Column
+    @Column(nullable = false)
     private String latitude;
 
     @ManyToOne

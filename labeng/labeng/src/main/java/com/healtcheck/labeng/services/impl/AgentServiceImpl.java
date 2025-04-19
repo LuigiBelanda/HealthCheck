@@ -9,6 +9,7 @@ import com.healtcheck.labeng.exceptions.IncorrectPasswordException;
 import com.healtcheck.labeng.repositories.AgentRepository;
 import com.healtcheck.labeng.services.AgentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 // Esta anotação @Service indica que essa classe é um "serviço" dentro do sistema,
@@ -21,6 +22,9 @@ public class AgentServiceImpl implements AgentService {
     @Autowired
     private AgentRepository agentRepository;
 
+    // Criar um codificador de senha BCrypt
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
     // Este método é chamado quando alguém quer se cadastrar no sistema (fazer o "registro").
     @Override
     public Agent register(AgentRegisterDTO agentRegisterDTO) {
@@ -30,12 +34,15 @@ public class AgentServiceImpl implements AgentService {
             throw new EmailAlreadyRegisteredException("E-mail já cadastrado.");
         }
 
-        // Se o e-mail ainda não estiver no sistema, criamos um novo usuário.
         Agent agent = new Agent();
-        agent.setName(agentRegisterDTO.getName());         // Definimos o nome
-        agent.setEmail(agentRegisterDTO.getEmail());       // Definimos o e-mail
-        agent.setPassword(agentRegisterDTO.getPassword()); // Definimos a senha
-        agent.setCity(agentRegisterDTO.getCity());         // Definimos a cidade
+        agent.setName(agentRegisterDTO.getName());
+        agent.setEmail(agentRegisterDTO.getEmail());
+
+        // Codificar (hash) a senha antes de salvar
+        String hashedPassword = passwordEncoder.encode(agentRegisterDTO.getPassword());
+        agent.setPassword(hashedPassword);
+
+        agent.setCity(agentRegisterDTO.getCity());
 
         // Salvamos esse novo usuário no banco de dados e retornamos ele.
         return agentRepository.save(agent);
@@ -51,7 +58,8 @@ public class AgentServiceImpl implements AgentService {
 
         // Se o e-mail existir, agora o sistema verifica se a senha está correta.
         // Se estiver errada, mostra um erro dizendo que a senha está incorreta.
-        if (!agent.getPassword().equals(agentLoginDTO.getPassword())) {
+        // Verificar se a senha fornecida corresponde ao hash armazenado
+        if (!passwordEncoder.matches(agentLoginDTO.getPassword(), agent.getPassword())) {
             throw new IncorrectPasswordException("Senha incorreta.");
         }
 

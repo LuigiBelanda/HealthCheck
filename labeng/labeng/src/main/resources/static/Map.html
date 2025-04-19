@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
     <title>Mapa de Casos de Doenças</title>
     <meta charset="utf-8" />
@@ -235,7 +235,7 @@
     // Função para carregar os casos da API
     async function loadCases() {
         try {
-            const response = await fetch('http://localhost:8080/api/cases');
+            const response = await fetch('http://localhost:8080/map/cases');
             allCases = await response.json();
 
             // Extrair valores únicos para os filtros

@@ -40,7 +40,8 @@ public class CaseController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Caso registrado com sucesso",
                     content = @Content(schema = @Schema(implementation = CaseResponseDTO.class))),
-            @ApiResponse(responseCode = "400", description = "Dados de entrada inválidos")
+            @ApiResponse(responseCode = "400", description = "Dados de entrada inválidos",
+                    content = @Content)
     })
     public ResponseEntity<CaseResponseDTO> register(@RequestBody @Valid CaseRegisterDTO caseRegisterDTO) {
         CaseResponseDTO response = caseService.register(caseRegisterDTO);

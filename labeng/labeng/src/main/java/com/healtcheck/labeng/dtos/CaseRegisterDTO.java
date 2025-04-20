@@ -42,7 +42,7 @@ public class CaseRegisterDTO {
 
     @NotNull(message = "Estado não pode ser nulo")
     @NotBlank(message = "Estado não pode estar vazio")
-    @Schema(description = "Nome do estado", example = "SP", required = true)
+    @Schema(description = "Nome do estado", example = "São Paulo", required = true)
     private String state;
 
     @NotNull(message = "CEP não pode ser nulo")

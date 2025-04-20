@@ -33,7 +33,7 @@ public class CaseResponseDTO {
     @Schema(description = "Nome da cidade", example = "São Paulo")
     private String city;
 
-    @Schema(description = "Nome do estado", example = "SP")
+    @Schema(description = "Nome do estado", example = "São Paulo")
     private String state;
 
     @Schema(description = "CEP do endereço", example = "01234-567")

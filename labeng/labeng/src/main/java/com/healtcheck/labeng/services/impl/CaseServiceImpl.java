@@ -20,7 +20,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriUtils;
 
 import java.io.IOException;
@@ -42,7 +41,6 @@ public class CaseServiceImpl implements CaseService {
     private final AgentRepository agentRepository;
     private final ObjectMapper objectMapper;
     private final ModelMapper modelMapper;
-    private final RestTemplate restTemplate;
 
     @Value("${geoapify.api.key}")
     private String geoapifyApiKey;
@@ -52,13 +50,11 @@ public class CaseServiceImpl implements CaseService {
             CaseRepository caseRepository,
             AgentRepository agentRepository,
             ObjectMapper objectMapper,
-            ModelMapper modelMapper,
-            RestTemplate restTemplate) {
+            ModelMapper modelMapper) {
         this.caseRepository = caseRepository;
         this.agentRepository = agentRepository;
         this.objectMapper = objectMapper;
         this.modelMapper = modelMapper;
-        this.restTemplate = restTemplate;
     }
 
     @Override

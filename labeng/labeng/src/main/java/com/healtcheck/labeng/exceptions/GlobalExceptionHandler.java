@@ -109,4 +109,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         );
         return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
+
+    // Esse método é acionado quando uma "ResourceNotFoundException" for lançada
+    @ExceptionHandler(SearchInvalidException.class)
+    public ResponseEntity<ErrorDetails> handleEmailNotFoundException(SearchInvalidException  exception, WebRequest webRequest) {
+        ErrorDetails errorDetails = new ErrorDetails(
+                LocalDateTime.now(),
+                exception.getMessage(),
+                webRequest.getDescription(false),
+                HttpStatus.BAD_REQUEST
+        );
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
 }

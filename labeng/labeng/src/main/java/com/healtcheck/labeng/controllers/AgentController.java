@@ -36,8 +36,10 @@ public class AgentController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Agente registrado com sucesso",
                     content = @Content(schema = @Schema(implementation = AgentResponseDTO.class))),
-            @ApiResponse(responseCode = "400", description = "Dados de entrada inválidos"),
-            @ApiResponse(responseCode = "409", description = "Email já registrado")
+            @ApiResponse(responseCode = "400", description = "Dados de entrada inválidos",
+                    content = @Content),
+            @ApiResponse(responseCode = "409", description = "Email já registrado",
+                    content = @Content)
     })
     public ResponseEntity<AgentResponseDTO> register(@RequestBody @Valid AgentRegisterDTO agentRegisterDTO) {
         AgentResponseDTO response = agentService.register(agentRegisterDTO);
@@ -49,9 +51,12 @@ public class AgentController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Login realizado com sucesso",
                     content = @Content(schema = @Schema(implementation = AgentResponseDTO.class))),
-            @ApiResponse(responseCode = "400", description = "Dados de entrada inválidos"),
-            @ApiResponse(responseCode = "404", description = "Email não encontrado"),
-            @ApiResponse(responseCode = "401", description = "Senha incorreta")
+            @ApiResponse(responseCode = "400", description = "Dados de entrada inválidos",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "Email não encontrado",
+                    content = @Content),
+            @ApiResponse(responseCode = "401", description = "Senha incorreta",
+                    content = @Content)
     })
     public ResponseEntity<AgentResponseDTO> login(@RequestBody @Valid AgentLoginDTO agentLoginDTO) {
         AgentResponseDTO response = agentService.login(agentLoginDTO);

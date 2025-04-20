@@ -3,6 +3,13 @@ package com.healtcheck.labeng.controllers;
 import com.healtcheck.labeng.dtos.CaseMapDTO;
 import com.healtcheck.labeng.entities.Case;
 import com.healtcheck.labeng.repositories.CaseRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +25,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/map")
 // Permite requisições de qualquer origem (CORS). Ideal para ambiente de desenvolvimento
 @CrossOrigin(origins = "*")
+@Tag(name = "Mapa", description = "Endpoints para visualização de casos no mapa")
 public class MapController {
 
     // Injeta automaticamente o repositório de casos (acesso ao banco de dados)
@@ -26,6 +34,24 @@ public class MapController {
 
     // Rota GET que retorna todos os casos para exibição no mapa
     @GetMapping("/cases")
+    @Operation(
+            summary = "Obter casos para mapa",
+            description = "Retorna todos os casos que possuem coordenadas geográficas válidas para exibição no mapa"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Casos encontrados com sucesso",
+                    content = @Content(
+                            array = @ArraySchema(schema = @Schema(implementation = CaseMapDTO.class))
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "Nenhum caso com coordenadas encontrado",
+                    content = @Content
+            )
+    })
     public List<CaseMapDTO> getAllCasesForMap() {
         // Busca todos os casos registrados no banco
         List<Case> cases = caseRepository.findAll();

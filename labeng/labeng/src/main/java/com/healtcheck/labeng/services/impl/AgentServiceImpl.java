@@ -2,69 +2,71 @@ package com.healtcheck.labeng.services.impl;
 
 import com.healtcheck.labeng.dtos.AgentLoginDTO;
 import com.healtcheck.labeng.dtos.AgentRegisterDTO;
+import com.healtcheck.labeng.dtos.AgentResponseDTO;
 import com.healtcheck.labeng.entities.Agent;
 import com.healtcheck.labeng.exceptions.EmailAlreadyRegisteredException;
 import com.healtcheck.labeng.exceptions.EmailNotFoundException;
 import com.healtcheck.labeng.exceptions.IncorrectPasswordException;
 import com.healtcheck.labeng.repositories.AgentRepository;
 import com.healtcheck.labeng.services.AgentService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-// Esta anotação @Service indica que essa classe é um "serviço" dentro do sistema,
-// ou seja, ela contém regras e ações que o sistema realiza (como registrar ou logar um usuário).
 @Service
 public class AgentServiceImpl implements AgentService {
 
-    // Aqui estamos dizendo que o sistema deve automaticamente fornecer (ou injetar)
-    // uma instância do AgentRepository, que é a parte do sistema que conversa com o banco de dados.
+    private final AgentRepository agentRepository;
+    private final ModelMapper modelMapper;
+    private final BCryptPasswordEncoder passwordEncoder;
+
     @Autowired
-    private AgentRepository agentRepository;
-
-    // Criar um codificador de senha BCrypt
-    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
-    // Este método é chamado quando alguém quer se cadastrar no sistema (fazer o "registro").
-    @Override
-    public Agent register(AgentRegisterDTO agentRegisterDTO) {
-        // Aqui ele verifica se já existe um usuário cadastrado com o e-mail informado.
-        // Se sim, ele lança um erro dizendo que o e-mail já está registrado.
-        if (agentRepository.findByEmail(agentRegisterDTO.getEmail()).isPresent()) {
-            throw new EmailAlreadyRegisteredException("E-mail já cadastrado.");
-        }
-
-        Agent agent = new Agent();
-        agent.setName(agentRegisterDTO.getName());
-        agent.setEmail(agentRegisterDTO.getEmail());
-
-        // Codificar (hash) a senha antes de salvar
-        String hashedPassword = passwordEncoder.encode(agentRegisterDTO.getPassword());
-        agent.setPassword(hashedPassword);
-
-        agent.setCity(agentRegisterDTO.getCity());
-
-        // Salvamos esse novo usuário no banco de dados e retornamos ele.
-        return agentRepository.save(agent);
+    public AgentServiceImpl(AgentRepository agentRepository, ModelMapper modelMapper) {
+        this.agentRepository = agentRepository;
+        this.modelMapper = modelMapper;
+        this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
-    // Este método é chamado quando alguém quer entrar no sistema (fazer "login").
+    /*
+    O @Transactional do Spring faz com que o método seja executado dentro de uma
+    transação de banco de dados. Isso significa que todas as operações dentro
+    do método são tratadas como uma única transação: ou tudo dá certo e
+    é confirmado (commit), ou se der algum erro, tudo é desfeito automaticamente (rollback).
+    */
     @Override
-    public Agent login(AgentLoginDTO agentLoginDTO) {
-        // Primeiro, o sistema tenta encontrar um usuário com o e-mail informado.
-        // Se não encontrar, ele mostra um erro dizendo que o e-mail não existe.
+    @Transactional
+    public AgentResponseDTO register(AgentRegisterDTO agentRegisterDTO) {
+        // Verificar se o email já existe
+        agentRepository.findByEmail(agentRegisterDTO.getEmail())
+                .ifPresent(agent -> {
+                    throw new EmailAlreadyRegisteredException("E-mail já cadastrado.");
+                });
+
+        // Mapear o DTO para a entidade
+        Agent agent = modelMapper.map(agentRegisterDTO, Agent.class);
+
+        // Criptografar senha
+        agent.setPassword(passwordEncoder.encode(agentRegisterDTO.getPassword()));
+
+        // Salvar e mapear para DTO de resposta
+        Agent savedAgent = agentRepository.save(agent);
+        return modelMapper.map(savedAgent, AgentResponseDTO.class);
+    }
+
+    @Override
+    public AgentResponseDTO login(AgentLoginDTO agentLoginDTO) {
+        // Buscar agente pelo email
         Agent agent = agentRepository.findByEmail(agentLoginDTO.getEmail())
                 .orElseThrow(() -> new EmailNotFoundException("E-mail não encontrado."));
 
-        // Se o e-mail existir, agora o sistema verifica se a senha está correta.
-        // Se estiver errada, mostra um erro dizendo que a senha está incorreta.
-        // Verificar se a senha fornecida corresponde ao hash armazenado
+        // Verificar senha
         if (!passwordEncoder.matches(agentLoginDTO.getPassword(), agent.getPassword())) {
             throw new IncorrectPasswordException("Senha incorreta.");
         }
 
-        // Se estiver tudo certo (e-mail e senha corretos), devolvemos o usuário.
-        return agent;
+        // Mapear para DTO de resposta
+        return modelMapper.map(agent, AgentResponseDTO.class);
     }
 }
-

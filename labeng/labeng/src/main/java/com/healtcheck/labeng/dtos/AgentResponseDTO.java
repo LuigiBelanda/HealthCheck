@@ -4,12 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CaseSearchResultDTO {
-    private List<CaseResponseDTO> cases;
-    private int totalCases;
+public class AgentResponseDTO {
+    private Long id;
+    private String name;
+    private String email;
+    private String city;
 }

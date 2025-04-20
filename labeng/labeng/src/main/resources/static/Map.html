@@ -235,7 +235,7 @@
     // Função para carregar os casos da API
     async function loadCases() {
         try {
-            const response = await fetch('http://localhost:8080/map/cases');
+            const response = await fetch('http://localhost:8080/api/map/cases');
             allCases = await response.json();
 
             // Extrair valores únicos para os filtros

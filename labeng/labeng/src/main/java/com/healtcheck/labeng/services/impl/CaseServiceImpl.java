@@ -3,6 +3,7 @@ package com.healtcheck.labeng.services.impl;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.healtcheck.labeng.dtos.CaseRegisterDTO;
+import com.healtcheck.labeng.dtos.CaseResponseDTO;
 import com.healtcheck.labeng.dtos.CaseSearchRequestDTO;
 import com.healtcheck.labeng.entities.Agent;
 import com.healtcheck.labeng.entities.Case;
@@ -11,9 +12,15 @@ import com.healtcheck.labeng.exceptions.UnauthorizedOperationException;
 import com.healtcheck.labeng.repositories.AgentRepository;
 import com.healtcheck.labeng.repositories.CaseRepository;
 import com.healtcheck.labeng.services.CaseService;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriUtils;
 
 import java.io.IOException;
@@ -25,32 +32,38 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-// Essa anotação define que essa classe é um serviço do Spring
 @Service
+@Slf4j
 public class CaseServiceImpl implements CaseService {
 
-    // URL base da API Geoapify para obter coordenadas geográficas
     private static final String GEOAPIFY_API_URL = "https://api.geoapify.com/v1/geocode/search";
 
-    // Injeção do repositório de casos (para salvar e buscar no banco)
-    @Autowired
-    private CaseRepository caseRepository;
+    private final CaseRepository caseRepository;
+    private final AgentRepository agentRepository;
+    private final ObjectMapper objectMapper;
+    private final ModelMapper modelMapper;
+    private final RestTemplate restTemplate;
 
-    // Injeção do repositório de agentes (para verificar se o agente existe)
-    @Autowired
-    private AgentRepository agentRepository;
-
-    // Utilizado para interpretar o JSON de resposta da API (Geoapify)
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    // A chave da API Geoapify é lida do arquivo application.properties
     @Value("${geoapify.api.key}")
     private String geoapifyApiKey;
 
-    // Método que registra um novo caso
+    @Autowired
+    public CaseServiceImpl(
+            CaseRepository caseRepository,
+            AgentRepository agentRepository,
+            ObjectMapper objectMapper,
+            ModelMapper modelMapper,
+            RestTemplate restTemplate) {
+        this.caseRepository = caseRepository;
+        this.agentRepository = agentRepository;
+        this.objectMapper = objectMapper;
+        this.modelMapper = modelMapper;
+        this.restTemplate = restTemplate;
+    }
+
     @Override
-    public Case register(CaseRegisterDTO caseRegisterDTO) {
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    public CaseResponseDTO register(CaseRegisterDTO caseRegisterDTO) {
         // Busca o agente no banco pelo ID
         Agent agent = agentRepository.findById(caseRegisterDTO.getAgentId())
                 .orElseThrow(() -> new ResourceNotFoundException("Agente não encontrado"));
@@ -60,7 +73,8 @@ public class CaseServiceImpl implements CaseService {
             throw new UnauthorizedOperationException("O agente só pode registrar casos em sua própria cidade: " + agent.getCity());
         }
 
-        // Criação do objeto Case e preenchimento dos dados básicos
+        // Criamos uma nova instância em vez de usar ModelMapper
+        // para evitar problemas com referências de objetos não gerenciados
         Case newCase = new Case();
         newCase.setDisease(caseRegisterDTO.getDisease());
         newCase.setStreet(caseRegisterDTO.getStreet());
@@ -71,7 +85,7 @@ public class CaseServiceImpl implements CaseService {
         newCase.setState(caseRegisterDTO.getState());
         newCase.setZipCode(caseRegisterDTO.getZipCode());
         newCase.setRegistrationDate(LocalDateTime.now());
-        newCase.setAgent(agent); // associa o agente que registrou
+        newCase.setAgent(agent);
 
         // Tenta obter a latitude e longitude com base no endereço usando a API
         try {
@@ -95,8 +109,77 @@ public class CaseServiceImpl implements CaseService {
             System.err.println("Erro ao obter coordenadas: " + e.getMessage());
         }
 
-        // Salva e retorna o novo caso registrado
-        return caseRepository.save(newCase);
+        // Salva o novo caso
+        Case savedCase = caseRepository.save(newCase);
+
+        // Retorna o DTO de resposta
+        return modelMapper.map(savedCase, CaseResponseDTO.class);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<CaseResponseDTO> searchCases(CaseSearchRequestDTO searchRequest) {
+        String city = searchRequest.getCity();
+        String neighborhood = searchRequest.getNeighborhood();
+        String disease = searchRequest.getDisease();
+
+        List<Case> cases;
+
+        if (StringUtils.isNotBlank(city) && StringUtils.isNotBlank(neighborhood) && StringUtils.isNotBlank(disease)) {
+            cases = caseRepository.findByCityAndNeighborhoodAndDisease(city, neighborhood, disease);
+        } else if (StringUtils.isNotBlank(city) && StringUtils.isNotBlank(neighborhood)) {
+            cases = caseRepository.findByCityAndNeighborhood(city, neighborhood);
+        } else if (StringUtils.isNotBlank(city) && StringUtils.isNotBlank(disease)) {
+            cases = caseRepository.findByCityAndDisease(city, disease);
+        } else {
+            cases = caseRepository.findByCity(city);
+        }
+
+        return convertToDTOList(cases);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<CaseResponseDTO> findByCity(String city) {
+        List<Case> cases = caseRepository.findByCity(city);
+        return convertToDTOList(cases);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<CaseResponseDTO> findByCityAndNeighborhood(String city, String neighborhood) {
+        List<Case> cases = caseRepository.findByCityAndNeighborhood(city, neighborhood);
+        return convertToDTOList(cases);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<CaseResponseDTO> findByCityAndDisease(String city, String disease) {
+        List<Case> cases = caseRepository.findByCityAndDisease(city, disease);
+        return convertToDTOList(cases);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<CaseResponseDTO> findByCityAndNeighborhoodAndDisease(String city, String neighborhood, String disease) {
+        List<Case> cases = caseRepository.findByCityAndNeighborhoodAndDisease(city, neighborhood, disease);
+        return convertToDTOList(cases);
+    }
+
+    private List<CaseResponseDTO> convertToDTOList(List<Case> cases) {
+        return cases.stream()
+                .map(c -> modelMapper.map(c, CaseResponseDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    private String buildFullAddress(Case caseEntity) {
+        return String.format("%s, %s, %s, %s, %s, %s",
+                caseEntity.getStreet(),
+                caseEntity.getNumber(),
+                caseEntity.getNeighborhood(),
+                caseEntity.getCity(),
+                caseEntity.getState() + ", Brazil",
+                caseEntity.getZipCode());
     }
 
     /**
@@ -171,41 +254,5 @@ public class CaseServiceImpl implements CaseService {
             this.latitude = latitude;
             this.longitude = longitude;
         }
-    }
-
-    // Métodos para buscar casos filtrando por cidade, bairro e/ou doença
-
-    @Override
-    public List<CaseSearchRequestDTO> findByCity(String city) {
-        List<Case> cases = caseRepository.findByCity(city);
-        return convertToDTOList(cases); // converte para DTO antes de retornar
-    }
-
-    @Override
-    public List<CaseSearchRequestDTO> findByCityAndNeighborhood(String city, String neighborhood) {
-        List<Case> cases = caseRepository.findByCityAndNeighborhood(city, neighborhood);
-        return convertToDTOList(cases);
-    }
-
-    @Override
-    public List<CaseSearchRequestDTO> findByCityAndDisease(String city, String disease) {
-        List<Case> cases = caseRepository.findByCityAndDisease(city, disease);
-        return convertToDTOList(cases);
-    }
-
-    @Override
-    public List<CaseSearchRequestDTO> findByCityAndNeighborhoodAndDisease(String city, String neighborhood, String disease) {
-        List<Case> cases = caseRepository.findByCityAndNeighborhoodAndDisease(city, neighborhood, disease);
-        return convertToDTOList(cases);
-    }
-
-    /**
-     * Método auxiliar que converte a lista de entidades `Case`
-     * para uma lista de DTOs que serão devolvidas pela API
-     */
-    private List<CaseSearchRequestDTO> convertToDTOList(List<Case> cases) {
-        return cases.stream()
-                .map(CaseSearchRequestDTO::new) // usa o construtor do DTO
-                .collect(Collectors.toList());
     }
 }

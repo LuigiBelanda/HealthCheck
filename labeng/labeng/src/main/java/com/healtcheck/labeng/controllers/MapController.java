@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 // Define que essa classe é um controller REST (responde a requisições HTTP com dados JSON)
 @RestController
 // Define o prefixo "/map" para todas as rotas deste controller
-@RequestMapping("/map")
+@RequestMapping("/api/map")
 // Permite requisições de qualquer origem (CORS). Ideal para ambiente de desenvolvimento
 @CrossOrigin(origins = "*")
 public class MapController {

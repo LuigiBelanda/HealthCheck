@@ -3,7 +3,7 @@ name: HealthCheck
 meta:
   id: wrk_6e12c6fc8eea44feb385392af5482c66
   created: 1743948247724
-  modified: 1743948247724
+  modified: 1745111925935
 collection:
   - name: 1 - Agents
     meta:
@@ -12,12 +12,12 @@ collection:
       modified: 1744995938865
       sortKey: -1744995391220
     children:
-      - url: "{{ _.base_url }}/user/register"
+      - url: "{{ _.base_url }}/agents/register"
         name: 1 - Criando usuário 1
         meta:
           id: req_8594502f4c784f03b33ba2c1e9aa214c
           created: 1743948256462
-          modified: 1744995997706
+          modified: 1745112063218
           isPrivate: false
           sortKey: -1744995403699
         method: POST
@@ -43,12 +43,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: "{{ _.base_url }}/user/login"
+      - url: "{{ _.base_url }}/agents/login"
         name: 6 - Login usuario 1
         meta:
           id: req_bde23ff65ff241d1a361aea5347a385e
           created: 1743948457627
-          modified: 1744995438564
+          modified: 1745112132121
           isPrivate: false
           sortKey: -1744995403199
         method: POST
@@ -72,12 +72,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: "{{ _.base_url }}/user/register"
+      - url: "{{ _.base_url }}/agents/register"
         name: 5 - TEST - Criação duplicada usuário 1
         meta:
           id: req_4fbee13404b648adb1f9bde24ea14685
           created: 1743948591448
-          modified: 1744995425905
+          modified: 1745112120518
           isPrivate: false
           sortKey: -1744995403299
         method: POST
@@ -103,12 +103,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: "{{ _.base_url }}/user/login"
+      - url: "{{ _.base_url }}/agents/login"
         name: 7 - TEST - Email errado login usuario 1
         meta:
           id: req_fd54964a077e4c96a884bc85e61fae5d
           created: 1743948610733
-          modified: 1744995441423
+          modified: 1745112154796
           isPrivate: false
           sortKey: -1744995403099
         method: POST
@@ -132,12 +132,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: "{{ _.base_url }}/user/login"
+      - url: "{{ _.base_url }}/agents/login"
         name: 8 - TEST - Senha errada login usuario 1
         meta:
           id: req_c1a121e917da462c87a8acf6c83ca300
           created: 1743950448404
-          modified: 1744995444715
+          modified: 1745112159161
           isPrivate: false
           sortKey: -1744995402999
         method: POST
@@ -161,12 +161,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: "{{ _.base_url }}/user/register"
+      - url: "{{ _.base_url }}/agents/register"
         name: 2 - Criando usuário 2
         meta:
           id: req_fbb83188802a4f64a5907f699a5c7b5f
           created: 1743954993132
-          modified: 1744996001516
+          modified: 1745112080246
           isPrivate: false
           sortKey: -1744995403599
         method: POST
@@ -192,12 +192,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: "{{ _.base_url }}/user/register"
+      - url: "{{ _.base_url }}/agents/register"
         name: 3 - Criando usuário 3
         meta:
           id: req_ab5bc4546789483a9d46d2e3b38cc30f
           created: 1743954998014
-          modified: 1744996006390
+          modified: 1745112110254
           isPrivate: false
           sortKey: -1744995403499
         method: POST
@@ -223,12 +223,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: "{{ _.base_url }}/user/register"
+      - url: "{{ _.base_url }}/agents/register"
         name: 4 - Criando usuário 4
         meta:
           id: req_f8d1919811514547970eb6590dfdd398
           created: 1743955067859
-          modified: 1744995418603
+          modified: 1745112114499
           isPrivate: false
           sortKey: -1744995403399
         method: POST
@@ -254,12 +254,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: "{{ _.base_url }}/user/register"
+      - url: "{{ _.base_url }}/agents/login"
         name: 9 - TEST - Senha menos que 8 caracteres
         meta:
           id: req_cb0ea80798f44322a7a2ed203a17c7b6
           created: 1744330817369
-          modified: 1744995446851
+          modified: 1745112163960
           isPrivate: false
           sortKey: -1744995402899
         method: POST
@@ -285,12 +285,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: "{{ _.base_url }}/user/register"
+      - url: "{{ _.base_url }}/agents/login"
         name: 12 - TEST - Formato de email errado
         meta:
           id: req_8488f4fea061413da7c637bc7b79754e
           created: 1744330894293
-          modified: 1744995453816
+          modified: 1745112182414
           isPrivate: false
           sortKey: -1744995402599
         method: POST
@@ -316,12 +316,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: "{{ _.base_url }}/user/register"
+      - url: "{{ _.base_url }}/agents/register"
         name: 13 - TEST - Nome nulo
         meta:
           id: req_956ff8d82d7e4c09bd8eb4408596c2b3
           created: 1744330943293
-          modified: 1744995462203
+          modified: 1745112229419
           isPrivate: false
           sortKey: -1744995402549
         method: POST
@@ -347,12 +347,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: "{{ _.base_url }}/user/register"
+      - url: "{{ _.base_url }}/agents/register"
         name: 14 - TEST - Nome vazio
         meta:
           id: req_190b3876adae4e5db9fec71c1a0d2605
           created: 1744330963894
-          modified: 1744995460997
+          modified: 1745112237450
           isPrivate: false
           sortKey: -1744995402499
         method: POST
@@ -378,12 +378,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: "{{ _.base_url }}/user/register"
+      - url: "{{ _.base_url }}/agents/register"
         name: 15 - TEST - Email vazio
         meta:
           id: req_f2b262d51af24ca5a89a542032df12cb
           created: 1744330981463
-          modified: 1744995471199
+          modified: 1745112242509
           isPrivate: false
           sortKey: -1744995402449
         method: POST
@@ -409,12 +409,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: "{{ _.base_url }}/user/register"
+      - url: "{{ _.base_url }}/agents/register"
         name: 16 - TEST - Email nulo
         meta:
           id: req_c4d293538f9b4a009cbc2c4bdafd4084
           created: 1744331000840
-          modified: 1744995472504
+          modified: 1745112245791
           isPrivate: false
           sortKey: -1744995402424
         method: POST
@@ -440,12 +440,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: "{{ _.base_url }}/user/register"
+      - url: "{{ _.base_url }}/agents/login"
         name: 10 - TEST - Senha vazia
         meta:
           id: req_04792eb1f9b54fb79bd016deaaf37c63
           created: 1744331040982
-          modified: 1744995449022
+          modified: 1745112167890
           isPrivate: false
           sortKey: -1744995402799
         method: POST
@@ -471,12 +471,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: "{{ _.base_url }}/user/register"
+      - url: "{{ _.base_url }}/agents/login"
         name: 11 - TEST - Senha nula
         meta:
           id: req_86b9c552ddb343789cf49b93683e175b
           created: 1744331067682
-          modified: 1744995450983
+          modified: 1745112176456
           isPrivate: false
           sortKey: -1744995402699
         method: POST
@@ -502,12 +502,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: "{{ _.base_url }}/user/register"
+      - url: "{{ _.base_url }}/agents/register"
         name: 17 - TEST - Cidade vazia
         meta:
           id: req_a739505b654c4209afd14da621d37e64
           created: 1744331098112
-          modified: 1744995474630
+          modified: 1745112248525
           isPrivate: false
           sortKey: -1744995402411.5
         method: POST
@@ -533,12 +533,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: "{{ _.base_url }}/user/register"
+      - url: "{{ _.base_url }}/agents/register"
         name: 18 - TEST - Cidade nula
         meta:
           id: req_e113b3c27f4c4e128412da4e4a1c6523
           created: 1744331103118
-          modified: 1744995469299
+          modified: 1745112253750
           isPrivate: false
           sortKey: -1744995402399
         method: POST
@@ -568,15 +568,15 @@ collection:
     meta:
       id: fld_28ad45545244497a8d3d172194ec48c3
       created: 1744995483460
-      modified: 1744995931585
-      sortKey: -1744995391120
+      modified: 1745074950528
+      sortKey: -1744995391195
     children:
-      - url: "{{ _.base_url }}/cases/register"
+      - url: "{{ _.base_url }}/cases"
         name: 1 - Criando 1 caso
         meta:
           id: req_4134f6e364e44272a399e71b4b36cd2e
           created: 1744995503194
-          modified: 1745015500755
+          modified: 1745112279206
           isPrivate: false
           sortKey: -1744995503194
         method: POST
@@ -607,12 +607,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: "{{ _.base_url }}/cases/register"
+      - url: "{{ _.base_url }}/cases"
         name: 2 - Criando 2 caso
         meta:
           id: req_f362818091a84a1bacf55b528b0e60f3
           created: 1744995566705
-          modified: 1745015560324
+          modified: 1745112305118
           isPrivate: false
           sortKey: -1744995453446.5
         method: POST
@@ -643,12 +643,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: "{{ _.base_url }}/cases/register"
+      - url: "{{ _.base_url }}/cases"
         name: 3 - Tentando cadastrar caso em cidade diferente
         meta:
           id: req_61896a1b84dc4af5ac64db7f24f93f8e
           created: 1744995595164
-          modified: 1744996080851
+          modified: 1745112324406
           isPrivate: false
           sortKey: -1744995428572.75
         method: POST
@@ -679,12 +679,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: "{{ _.base_url }}/cases/register"
+      - url: "{{ _.base_url }}/cases"
         name: 4 - Agente inexistente
         meta:
           id: req_4a00c4344a244f95832158c8d74b775c
           created: 1744995633204
-          modified: 1744997556187
+          modified: 1745112334422
           isPrivate: false
           sortKey: -1744995416135.875
         method: POST
@@ -705,87 +705,6 @@ collection:
         headers:
           - name: Content-Type
             value: application/json
-          - name: User-Agent
-            value: insomnia/11.0.2
-        settings:
-          renderRequestBody: true
-          encodeUrl: true
-          followRedirects: global
-          cookies:
-            send: true
-            store: true
-          rebuildPath: true
-      - url: "{{ _.base_url }}/cases/search/city/Itapolis"
-        name: 5 - Pesquisa de casos (cidade)
-        meta:
-          id: req_5fa4b23ac2b44284b45c4411fc7808df
-          created: 1744997567270
-          modified: 1744997691433
-          isPrivate: false
-          sortKey: -1744995409917.4375
-        method: GET
-        headers:
-          - name: User-Agent
-            value: insomnia/11.0.2
-        settings:
-          renderRequestBody: true
-          encodeUrl: true
-          followRedirects: global
-          cookies:
-            send: true
-            store: true
-          rebuildPath: true
-      - url: "{{ _.base_url }}/cases/search/city/Itapolis/neighborhood/Centro"
-        name: 6 - Pesquisa de casos (cidade + bairro)
-        meta:
-          id: req_5e5de988ad02470990fe5b8301f2babb
-          created: 1744997607078
-          modified: 1744997696040
-          isPrivate: false
-          sortKey: -1744995406808.2188
-        method: GET
-        headers:
-          - name: User-Agent
-            value: insomnia/11.0.2
-        settings:
-          renderRequestBody: true
-          encodeUrl: true
-          followRedirects: global
-          cookies:
-            send: true
-            store: true
-          rebuildPath: true
-      - url: "{{ _.base_url }}/cases/search/city/Itapolis/disease/Dengue"
-        name: 7 - Pesquisa de casos (cidade + doença)
-        meta:
-          id: req_d67cfd5521b24f02bca978f416310b3d
-          created: 1744997633429
-          modified: 1744997701662
-          isPrivate: false
-          sortKey: -1744995405253.6094
-        method: GET
-        headers:
-          - name: User-Agent
-            value: insomnia/11.0.2
-        settings:
-          renderRequestBody: true
-          encodeUrl: true
-          followRedirects: global
-          cookies:
-            send: true
-            store: true
-          rebuildPath: true
-      - url: "{{ _.base_url
-          }}/cases/search/city/Itapolis/neighborhood/Centro/disease/Dengue"
-        name: 8 - Pesquisa de casos (cidade + bairro + doença)
-        meta:
-          id: req_351adafd96ed499ab073ea75ed98c681
-          created: 1744997713169
-          modified: 1744997725307
-          isPrivate: false
-          sortKey: -1744995404476.3047
-        method: GET
-        headers:
           - name: User-Agent
             value: insomnia/11.0.2
         settings:
@@ -858,7 +777,7 @@ collection:
         meta:
           id: req_1975f5fc17b846589d08a5247582d008
           created: 1744998614845
-          modified: 1744998685213
+          modified: 1745113023538
           isPrivate: false
           sortKey: -1744995404376.3047
         method: GET
@@ -867,7 +786,7 @@ collection:
           text: |-
             {
               "city": "Itapolis",
-              "neighborhood": "Centro",
+              "neighborhood": "Jardim Tropical",
             	"disease": "Dengue"
             }
         headers:
@@ -912,12 +831,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: "{{ _.base_url }}/cases/register"
+      - url: "{{ _.base_url }}/cases"
         name: 3 - Criando 3 caso
         meta:
           id: req_8c0566bf7445452b97456d706f94891f
           created: 1745018576633
-          modified: 1745019537398
+          modified: 1745112311519
           isPrivate: false
           sortKey: -1744995441009.625
         method: POST
@@ -948,12 +867,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: "{{ _.base_url }}/cases/register"
+      - url: "{{ _.base_url }}/cases"
         name: 4 - Criando 4 caso
         meta:
           id: req_a6c0b11ac17a4681bc59f30b159a6288
           created: 1745019446867
-          modified: 1745019593212
+          modified: 1745112316589
           isPrivate: false
           sortKey: -1744995434791.1875
         method: POST
@@ -984,12 +903,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: "{{ _.base_url }}/cases/register"
+      - url: "{{ _.base_url }}/cases"
         name: 4 - Criando 5 caso
         meta:
           id: req_cd735a2eb380404f8d59fba16fe22362
           created: 1745019641148
-          modified: 1745019703371
+          modified: 1745112319168
           isPrivate: false
           sortKey: -1744995431681.9688
         method: POST
@@ -1020,6 +939,33 @@ collection:
             send: true
             store: true
           rebuildPath: true
+  - name: 3 - Mapa
+    meta:
+      id: fld_7978e7ac43df4d958f03bf899ce0fe8d
+      created: 1745074939370
+      modified: 1745074948973
+      sortKey: -1744995391170
+    children:
+      - url: "{{ _.base_url }}/map/cases"
+        name: 1 - Coleta de casos mapa
+        meta:
+          id: req_5e6cb29e288148daa8a2f619635d858c
+          created: 1745074973989
+          modified: 1745075043221
+          isPrivate: false
+          sortKey: -1745074976437
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.0.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
 cookieJar:
   name: Default Jar
   meta:
@@ -1031,7 +977,7 @@ environments:
   meta:
     id: env_dff345144f5b27d28361764ce6b58a0ef8deefbe
     created: 1743948247728
-    modified: 1743954767184
+    modified: 1745111950855
     isPrivate: false
   data:
-    base_url: http://localhost:8080
+    base_url: http://localhost:8080/api

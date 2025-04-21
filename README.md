@@ -3,12 +3,12 @@
 HealthCheck API é um sistema backend para um aplicativo de vigilância epidemiológica, desenvolvido para que agentes de saúde possam cadastrar e gerenciar focos de doenças em diferentes localidades. Esta API permite o registro de agentes, autenticação, cadastro de casos e visualização georreferenciada dos focos de doenças.
 
 ## Principais Funcionalidades
-Gerenciamento de Agentes: Cadastro e autenticação de agentes de saúde
-Registro de Casos: Cadastro de ocorrências de doenças com dados geográficos
-Busca Avançada: Filtragem de casos por cidade, bairro e tipo de doença
-Visualização em Mapa: Exibição georreferenciada de casos utilizando coordenadas geográficas
-Segurança: Validação para garantir que agentes só registrem casos em suas respectivas cidades
-Geocodificação: Conversão automática de endereços em coordenadas geográficas
+- Gerenciamento de Agentes: Cadastro e autenticação de agentes de saúde
+- Registro de Casos: Cadastro de ocorrências de doenças com dados geográficos
+- Busca Avançada: Filtragem de casos por cidade, bairro e tipo de doença
+- Visualização em Mapa: Exibição georreferenciada de casos utilizando coordenadas geográficas
+- Segurança: Validação para garantir que agentes só registrem casos em suas respectivas cidades
+- Geocodificação: Conversão automática de endereços em coordenadas geográficas
 
 ## Tecnologias Utilizadas
 - Java 17: Linguagem de programação utilizada no backend

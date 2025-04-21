@@ -44,13 +44,13 @@ A API integra-se com o serviço Geoapify para converter automaticamente endereç
 ## Explicação usando como base alguns conceitos do modelo C4
 
 ### Diagrama de Contexto
-![Diagrama de Contexto](https://github.com/LuigiBelanda/HealthCheck/tree/master/Outros/structurizr-SystemContext.png)
+![Diagrama de Contexto](https://github.com/LuigiBelanda/HealthCheck/blob/master/Outros/structurizr-SystemContext.png)
 
 ### Diagrama de Contêineres
-![Diagrama de Contêineres](docs/diagrams/structurizr-Containers.png)
+![Diagrama de Contêineres](https://github.com/LuigiBelanda/HealthCheck/blob/master/Outros/structurizr-Containers.png)
 
 ### Diagrama de Componentes
-![Diagrama de Componentes](docs/diagrams/structurizr-Components.png)
+![Diagrama de Componentes](https://github.com/LuigiBelanda/HealthCheck/blob/master/Outros/structurizr-Components.png)
 
 O modelo C4 foi utilizado para descrever os níveis de abstração da aplicação:
 

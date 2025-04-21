@@ -3,6 +3,7 @@ package com.healtcheck.labeng.controllers;
 import com.healtcheck.labeng.dtos.AgentLoginDTO;
 import com.healtcheck.labeng.dtos.AgentRegisterDTO;
 import com.healtcheck.labeng.dtos.AgentResponseDTO;
+import com.healtcheck.labeng.exceptions.ErrorDetails;
 import com.healtcheck.labeng.services.AgentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -37,9 +38,9 @@ public class AgentController {
             @ApiResponse(responseCode = "201", description = "Agente registrado com sucesso",
                     content = @Content(schema = @Schema(implementation = AgentResponseDTO.class))),
             @ApiResponse(responseCode = "400", description = "Dados de entrada inválidos",
-                    content = @Content),
+                    content = @Content(schema = @Schema(implementation = ErrorDetails.class))),
             @ApiResponse(responseCode = "409", description = "Email já registrado",
-                    content = @Content)
+                    content = @Content(schema = @Schema(implementation = ErrorDetails.class)))
     })
     public ResponseEntity<AgentResponseDTO> register(@RequestBody @Valid AgentRegisterDTO agentRegisterDTO) {
         AgentResponseDTO response = agentService.register(agentRegisterDTO);
@@ -52,11 +53,11 @@ public class AgentController {
             @ApiResponse(responseCode = "200", description = "Login realizado com sucesso",
                     content = @Content(schema = @Schema(implementation = AgentResponseDTO.class))),
             @ApiResponse(responseCode = "400", description = "Dados de entrada inválidos",
-                    content = @Content),
+                    content = @Content(schema = @Schema(implementation = ErrorDetails.class))),
             @ApiResponse(responseCode = "404", description = "Email não encontrado",
-                    content = @Content),
+                    content = @Content(schema = @Schema(implementation = ErrorDetails.class))),
             @ApiResponse(responseCode = "401", description = "Senha incorreta",
-                    content = @Content)
+                    content = @Content(schema = @Schema(implementation = ErrorDetails.class)))
     })
     public ResponseEntity<AgentResponseDTO> login(@RequestBody @Valid AgentLoginDTO agentLoginDTO) {
         AgentResponseDTO response = agentService.login(agentLoginDTO);

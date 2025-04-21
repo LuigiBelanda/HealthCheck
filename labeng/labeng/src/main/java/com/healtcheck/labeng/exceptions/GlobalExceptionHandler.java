@@ -15,34 +15,42 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-// Indica que essa classe é um "Conselheiro Global" de tratamento de exceções.
-// Ela intercepta erros lançados por qualquer Controller da aplicação
+/**
+ * Manipulador global de exceções para padronizar as respostas de erro da API
+ */
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
-    // Esse método é chamado automaticamente quando ocorre um erro de validação em argumentos de métodos,
-    // geralmente em requisições POST ou PUT com @Valid no DTO.
-    // Ex: campos obrigatórios não preenchidos ou formatos inválidos.
+
+    /**
+     * Trata erros de validação de campos em requisições
+     */
     @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-        // Cria um mapa para armazenar os campos e mensagens de erro
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(
+            MethodArgumentNotValidException ex,
+            HttpHeaders headers,
+            HttpStatusCode status,
+            WebRequest request) {
+
         Map<String, String> errors = new HashMap<>();
 
-        // Para cada erro encontrado na validação, pegamos o nome do campo e a mensagem
         ex.getBindingResult().getAllErrors().forEach((error) -> {
             String fieldName = ((FieldError) error).getField();
             String message = error.getDefaultMessage();
             errors.put(fieldName, message);
         });
 
-        // Cria um objeto de detalhes do erro com data, título, descrição e status HTTP
-        // Classe modelo usada para padronizar os detalhes retornados em erros de exceção.
-        // Contém informações como data/hora do erro, mensagem, detalhes da requisição e status HTTP.
-        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), "Argumentos inválidos", errors.toString(), HttpStatus.BAD_REQUEST);
-        // Retorna a resposta com os detalhes e o código HTTP apropriado
+        ErrorDetails errorDetails = new ErrorDetails(
+                LocalDateTime.now(),
+                "Argumentos inválidos",
+                errors.toString(),
+                HttpStatus.BAD_REQUEST);
+
         return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }
 
-    // Captura qualquer exceção não tratada especificamente
+    /**
+     * Trata exceções genéricas não capturadas por outros handlers
+     */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorDetails> handleGlobalException(Exception exception, WebRequest webRequest) {
         ErrorDetails errorDetails = new ErrorDetails(
@@ -54,17 +62,31 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    // Esse método é acionado automaticamente sempre que uma "EmailAlreadyRegisteredException" for lançada
+    /**
+     * Trata exceção de email já registrado
+     */
     @ExceptionHandler(EmailAlreadyRegisteredException.class)
-    public ResponseEntity<ErrorDetails> handleEmailAlreadyRegisteredException(EmailAlreadyRegisteredException exception, WebRequest webRequest) {
-        // Cria um objeto de detalhes do erro com data, mensagem personalizada e status 400
-        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), exception.getMessage(), webRequest.getDescription(false), HttpStatus.BAD_REQUEST);
+    public ResponseEntity<ErrorDetails> handleEmailAlreadyRegisteredException(
+            EmailAlreadyRegisteredException exception,
+            WebRequest webRequest) {
+
+        ErrorDetails errorDetails = new ErrorDetails(
+                LocalDateTime.now(),
+                exception.getMessage(),
+                webRequest.getDescription(false),
+                HttpStatus.BAD_REQUEST);
+
         return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }
 
-    // Esse método é acionado quando uma "IncorrectPasswordException" for lançada
+    /**
+     * Trata exceção de senha incorreta
+     */
     @ExceptionHandler(IncorrectPasswordException.class)
-    public ResponseEntity<ErrorDetails> handleIncorrectPasswordException(IncorrectPasswordException exception, WebRequest webRequest) {
+    public ResponseEntity<ErrorDetails> handleIncorrectPasswordException(
+            IncorrectPasswordException exception,
+            WebRequest webRequest) {
+
         ErrorDetails errorDetails = new ErrorDetails(
                 LocalDateTime.now(),
                 exception.getMessage(),
@@ -74,9 +96,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorDetails, HttpStatus.UNAUTHORIZED);
     }
 
-    // Esse método é acionado quando uma "EmailNotFoundException" for lançada
+    /**
+     * Trata exceção de email não encontrado
+     */
     @ExceptionHandler(EmailNotFoundException.class)
-    public ResponseEntity<ErrorDetails> handleEmailNotFoundException(EmailNotFoundException exception, WebRequest webRequest) {
+    public ResponseEntity<ErrorDetails> handleEmailNotFoundException(
+            EmailNotFoundException exception,
+            WebRequest webRequest) {
+
         ErrorDetails errorDetails = new ErrorDetails(
                 LocalDateTime.now(),
                 exception.getMessage(),
@@ -86,9 +113,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
 
-    // Esse método é acionado quando uma "UnauthorizedOperationException" for lançada
+    /**
+     * Trata exceção de operação não autorizada
+     */
     @ExceptionHandler(UnauthorizedOperationException.class)
-    public ResponseEntity<ErrorDetails> handleEmailNotFoundException(UnauthorizedOperationException exception, WebRequest webRequest) {
+    public ResponseEntity<ErrorDetails> handleUnauthorizedOperationException(
+            UnauthorizedOperationException exception,
+            WebRequest webRequest) {
+
         ErrorDetails errorDetails = new ErrorDetails(
                 LocalDateTime.now(),
                 exception.getMessage(),
@@ -98,9 +130,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorDetails, HttpStatus.FORBIDDEN);
     }
 
-    // Esse método é acionado quando uma "ResourceNotFoundException" for lançada
+    /**
+     * Trata exceção de recurso não encontrado
+     */
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ErrorDetails> handleEmailNotFoundException(ResourceNotFoundException  exception, WebRequest webRequest) {
+    public ResponseEntity<ErrorDetails> handleResourceNotFoundException(
+            ResourceNotFoundException exception,
+            WebRequest webRequest) {
+
         ErrorDetails errorDetails = new ErrorDetails(
                 LocalDateTime.now(),
                 exception.getMessage(),
@@ -110,9 +147,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
 
-    // Esse método é acionado quando uma "ResourceNotFoundException" for lançada
+    /**
+     * Trata exceção de busca inválida
+     */
     @ExceptionHandler(SearchInvalidException.class)
-    public ResponseEntity<ErrorDetails> handleEmailNotFoundException(SearchInvalidException  exception, WebRequest webRequest) {
+    public ResponseEntity<ErrorDetails> handleSearchInvalidException(
+            SearchInvalidException exception,
+            WebRequest webRequest) {
+
         ErrorDetails errorDetails = new ErrorDetails(
                 LocalDateTime.now(),
                 exception.getMessage(),

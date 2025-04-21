@@ -2,6 +2,7 @@ package com.healtcheck.labeng.controllers;
 
 import com.healtcheck.labeng.dtos.CaseMapDTO;
 import com.healtcheck.labeng.entities.Case;
+import com.healtcheck.labeng.exceptions.ErrorDetails;
 import com.healtcheck.labeng.repositories.CaseRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -49,7 +50,7 @@ public class MapController {
             @ApiResponse(
                     responseCode = "204",
                     description = "Nenhum caso com coordenadas encontrado",
-                    content = @Content
+                    content = @Content(schema = @Schema(implementation = ErrorDetails.class))
             )
     })
     public List<CaseMapDTO> getAllCasesForMap() {

@@ -4,6 +4,7 @@ import com.healtcheck.labeng.dtos.CaseRegisterDTO;
 import com.healtcheck.labeng.dtos.CaseResponseDTO;
 import com.healtcheck.labeng.dtos.CaseSearchRequestDTO;
 import com.healtcheck.labeng.dtos.CaseSearchResultDTO;
+import com.healtcheck.labeng.exceptions.ErrorDetails;
 import com.healtcheck.labeng.exceptions.SearchInvalidException;
 import com.healtcheck.labeng.services.CaseService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -41,7 +42,7 @@ public class CaseController {
             @ApiResponse(responseCode = "201", description = "Caso registrado com sucesso",
                     content = @Content(schema = @Schema(implementation = CaseResponseDTO.class))),
             @ApiResponse(responseCode = "400", description = "Dados de entrada inválidos",
-                    content = @Content)
+                    content = @Content(schema = @Schema(implementation = ErrorDetails.class)))
     })
     public ResponseEntity<CaseResponseDTO> register(@RequestBody @Valid CaseRegisterDTO caseRegisterDTO) {
         CaseResponseDTO response = caseService.register(caseRegisterDTO);
@@ -55,7 +56,7 @@ public class CaseController {
             @ApiResponse(responseCode = "200", description = "Busca realizada com sucesso",
                     content = @Content(schema = @Schema(implementation = CaseSearchResultDTO.class))),
             @ApiResponse(responseCode = "400", description = "Requisição inválida - cidade não informada",
-                    content = @Content) // Sem schema específico, pois o corpo da resposta está vazio
+                    content = @Content(schema = @Schema(implementation = ErrorDetails.class)))
     })
     public ResponseEntity<CaseSearchResultDTO> search(@RequestBody CaseSearchRequestDTO searchRequest) {
         if (searchRequest.getCity() == null) {

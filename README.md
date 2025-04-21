@@ -1,25 +1,44 @@
-# 🏥 HealthCheck
-## 📋 Sobre o Projeto
-Aplicação desenvolvida para a disciplina de Laboratório de Engenharia de Software da FATEC Taquaritinga (Análise e Desenvolvimento de Sistemas). O HealthCheck visa auxiliar agentes de saúde na coleta de dados epidemiológicos durante visitas domiciliares e permitir que cidadãos consultem informações sobre doenças em sua região.
+# HealthCheck API
+## Visão Geral
+HealthCheck API é um sistema backend para um aplicativo de vigilância epidemiológica, desenvolvido para que agentes de saúde possam cadastrar e gerenciar focos de doenças em diferentes localidades. Esta API permite o registro de agentes, autenticação, cadastro de casos e visualização georreferenciada dos focos de doenças.
 
-<br>
+## Principais Funcionalidades
+Gerenciamento de Agentes: Cadastro e autenticação de agentes de saúde
+Registro de Casos: Cadastro de ocorrências de doenças com dados geográficos
+Busca Avançada: Filtragem de casos por cidade, bairro e tipo de doença
+Visualização em Mapa: Exibição georreferenciada de casos utilizando coordenadas geográficas
+Segurança: Validação para garantir que agentes só registrem casos em suas respectivas cidades
+Geocodificação: Conversão automática de endereços em coordenadas geográficas
 
-## 🚀 Tecnologias
-- Frontend: 📱 Flutter
-- Backend: ☕ Java / Spring Boot
-- Banco de Dados: 🗄️ PostgreSQL
+## Tecnologias Utilizadas
+- Java 17: Linguagem de programação utilizada no backend
+- Spring Boot 3.2.5: Framework para desenvolvimento de aplicações Java
+- Spring Data JPA: Persistência de dados
+- Spring Security: Implementação de BCrypt para criptografia de senhas
+- Swagger/OpenAPI: Documentação interativa da API
+- Spring Actuator: Monitoramento de saúde e métricas da aplicação
+- Lombok: Redução de código boilerplate
+- ModelMapper: Conversão entre DTOs e entidades
+- API Geoapify: Serviço de geocodificação para obtenção de coordenadas geográficas
 
-<br>
+## Estrutura da API
+### Endpoints Principais
+#### Agentes
+- POST /api/agents/register: Cadastro de novos agentes de saúde
+- POST /api/agents/login: Autenticação de agentes
 
-## 👥 Equipe
-- Gabriel Rosa
-- Francisco da Silva
-- Luigi Belanda
-- Welder Acciari
+#### Casos
+- POST /api/cases: Registro de novos casos de doenças
+- GET /api/cases/search: Busca de casos com filtros específicos
 
-<br>
+#### Mapa
+- GET /api/map/cases: Obtenção de todos os casos com coordenadas para exibição em mapa
 
-## 🧪 Requisições
-Na raiz do projeto temos uma pasta chamada "Requisições - Teste" exportada diretamente do Insomnia que pode ser importada para testar as funcionalidades da API. Basta importar esta coleção no seu Insomnia para começar a testar os endpoints disponíveis.
+## Modelos de Dados
+- Agent: Representa um agente de saúde com credenciais e localização
+- Case: Representa um caso/foco de doença com dados de localização e georreferenciamento
 
-Desenvolvido com ❤️ - FATEC Taquaritinga (2025)
+## Geocodificação Integrada
+A API integra-se com o serviço Geoapify para converter automaticamente endereços em coordenadas geográficas (latitude e longitude), permitindo a visualização precisa dos focos de doenças em mapas interativos. Esta funcionalidade está implementada no CaseServiceImpl e utiliza uma chave de API configurada no arquivo de propriedades da aplicação.
+
+## Demonstração da API

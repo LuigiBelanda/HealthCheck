@@ -1,0 +1,391 @@
+{
+  "id" : 101482,
+  "name" : "HealthCheck API",
+  "description" : "Sistema para registro e visualização de casos de doenças por agentes de saúde",
+  "lastModifiedDate" : "2025-04-21T17:39:46Z",
+  "lastModifiedUser" : "Luigi Belanda@NOTE-LUIGI",
+  "lastModifiedAgent" : "structurizr-java/1.24.0",
+  "configuration" : { },
+  "model" : {
+    "people" : [ {
+      "id" : "1",
+      "tags" : "Element,Person",
+      "name" : "Agente de Saúde",
+      "description" : "Profissional que registra e busca casos de doenças",
+      "relationships" : [ {
+        "id" : "4",
+        "tags" : "Relationship",
+        "sourceId" : "1",
+        "destinationId" : "3",
+        "description" : "Registra e busca casos"
+      }, {
+        "id" : "9",
+        "tags" : "Relationship",
+        "sourceId" : "1",
+        "destinationId" : "5",
+        "description" : "Acessa por meio de",
+        "technology" : "HTTP REST"
+      }, {
+        "id" : "27",
+        "tags" : "Relationship",
+        "sourceId" : "1",
+        "destinationId" : "10",
+        "description" : "Autenticação e gerenciamento de perfil"
+      }, {
+        "id" : "28",
+        "tags" : "Relationship",
+        "sourceId" : "1",
+        "destinationId" : "11",
+        "description" : "Registro e consulta de casos"
+      }, {
+        "id" : "29",
+        "tags" : "Relationship",
+        "sourceId" : "1",
+        "destinationId" : "12",
+        "description" : "Visualização de casos no mapa"
+      } ],
+      "location" : "Unspecified"
+    } ],
+    "softwareSystems" : [ {
+      "id" : "2",
+      "tags" : "Element,Software System",
+      "name" : "API Geoapify",
+      "description" : "Serviço de geocodificação para converter endereços em coordenadas geográficas",
+      "location" : "External",
+      "documentation" : { }
+    }, {
+      "id" : "3",
+      "tags" : "Element,Software System",
+      "name" : "HealthCheck API System",
+      "description" : "Permite aos agentes de saúde registrar e visualizar casos de doenças em diferentes localidades",
+      "location" : "Unspecified",
+      "containers" : [ {
+        "id" : "5",
+        "tags" : "Element,Container",
+        "name" : "HealthCheck API Application",
+        "description" : "API REST que fornece funcionalidades para registro e busca de casos de doenças",
+        "relationships" : [ {
+          "id" : "7",
+          "tags" : "Relationship",
+          "sourceId" : "5",
+          "destinationId" : "6",
+          "description" : "Lê e escreve dados"
+        }, {
+          "id" : "8",
+          "tags" : "Relationship",
+          "sourceId" : "5",
+          "destinationId" : "2",
+          "description" : "Obtém coordenadas geográficas",
+          "technology" : "HTTP REST API"
+        } ],
+        "technology" : "Spring Boot 3.2.5, Java 17",
+        "components" : [ {
+          "id" : "11",
+          "tags" : "Element,Component",
+          "name" : "Case Controller",
+          "description" : "Gerencia requisições relacionadas aos casos de doenças",
+          "relationships" : [ {
+            "id" : "19",
+            "tags" : "Relationship",
+            "sourceId" : "11",
+            "destinationId" : "14",
+            "description" : "Invoca"
+          } ],
+          "technology" : "Spring REST Controller",
+          "documentation" : { }
+        }, {
+          "id" : "14",
+          "tags" : "Element,Component",
+          "name" : "Case Service",
+          "description" : "Lógica de negócio para operações com casos",
+          "relationships" : [ {
+            "id" : "22",
+            "tags" : "Relationship",
+            "sourceId" : "14",
+            "destinationId" : "17",
+            "description" : "Utiliza"
+          }, {
+            "id" : "23",
+            "tags" : "Relationship",
+            "sourceId" : "14",
+            "destinationId" : "15",
+            "description" : "Solicita geocodificação"
+          } ],
+          "technology" : "Spring Service",
+          "documentation" : { }
+        }, {
+          "id" : "13",
+          "tags" : "Element,Component",
+          "name" : "Agent Service",
+          "description" : "Lógica de negócio para operações com agentes",
+          "relationships" : [ {
+            "id" : "21",
+            "tags" : "Relationship",
+            "sourceId" : "13",
+            "destinationId" : "16",
+            "description" : "Utiliza"
+          } ],
+          "technology" : "Spring Service",
+          "documentation" : { }
+        }, {
+          "id" : "17",
+          "tags" : "Element,Component",
+          "name" : "Case Repository",
+          "description" : "Acesso a dados de casos",
+          "relationships" : [ {
+            "id" : "25",
+            "tags" : "Relationship",
+            "sourceId" : "17",
+            "destinationId" : "6",
+            "description" : "Lê e escreve dados de casos"
+          } ],
+          "technology" : "Spring Data JPA Repository",
+          "documentation" : { }
+        }, {
+          "id" : "12",
+          "tags" : "Element,Component",
+          "name" : "Map Controller",
+          "description" : "Fornece dados para visualização georreferenciada dos casos",
+          "relationships" : [ {
+            "id" : "20",
+            "tags" : "Relationship",
+            "sourceId" : "12",
+            "destinationId" : "17",
+            "description" : "Consulta"
+          } ],
+          "technology" : "Spring REST Controller",
+          "documentation" : { }
+        }, {
+          "id" : "15",
+          "tags" : "Element,Component",
+          "name" : "Geocoding Service",
+          "description" : "Serviço para obtenção de coordenadas geográficas",
+          "relationships" : [ {
+            "id" : "26",
+            "tags" : "Relationship",
+            "sourceId" : "15",
+            "destinationId" : "2",
+            "description" : "Consulta",
+            "technology" : "HTTP REST"
+          } ],
+          "technology" : "Spring Service",
+          "documentation" : { }
+        }, {
+          "id" : "10",
+          "tags" : "Element,Component",
+          "name" : "Agent Controller",
+          "description" : "Gerencia requisições relacionadas aos agentes de saúde",
+          "relationships" : [ {
+            "id" : "18",
+            "tags" : "Relationship",
+            "sourceId" : "10",
+            "destinationId" : "13",
+            "description" : "Invoca"
+          } ],
+          "technology" : "Spring REST Controller",
+          "documentation" : { }
+        }, {
+          "id" : "16",
+          "tags" : "Element,Component",
+          "name" : "Agent Repository",
+          "description" : "Acesso a dados de agentes",
+          "relationships" : [ {
+            "id" : "24",
+            "tags" : "Relationship",
+            "sourceId" : "16",
+            "destinationId" : "6",
+            "description" : "Lê e escreve dados de agentes"
+          } ],
+          "technology" : "Spring Data JPA Repository",
+          "documentation" : { }
+        } ],
+        "documentation" : { }
+      }, {
+        "id" : "6",
+        "tags" : "Element,Container",
+        "name" : "Database",
+        "description" : "Armazena informações sobre agentes e casos",
+        "technology" : "Banco de dados relacional",
+        "documentation" : { }
+      } ],
+      "documentation" : { }
+    } ]
+  },
+  "documentation" : { },
+  "views" : {
+    "systemContextViews" : [ {
+      "key" : "SystemContext",
+      "order" : 1,
+      "description" : "Visão de contexto do sistema HealthCheck API",
+      "softwareSystemId" : "3",
+      "automaticLayout" : {
+        "implementation" : "Dagre",
+        "rankDirection" : "TopBottom",
+        "rankSeparation" : 300,
+        "nodeSeparation" : 600,
+        "edgeSeparation" : 200,
+        "vertices" : false
+      },
+      "enterpriseBoundaryVisible" : true,
+      "relationships" : [ {
+        "id" : "4"
+      } ],
+      "elements" : [ {
+        "id" : "1",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "2",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "3",
+        "x" : 0,
+        "y" : 0
+      } ]
+    } ],
+    "containerViews" : [ {
+      "key" : "Containers",
+      "order" : 2,
+      "description" : "Visão dos containers do sistema HealthCheck API",
+      "softwareSystemId" : "3",
+      "automaticLayout" : {
+        "implementation" : "Dagre",
+        "rankDirection" : "TopBottom",
+        "rankSeparation" : 300,
+        "nodeSeparation" : 600,
+        "edgeSeparation" : 200,
+        "vertices" : false
+      },
+      "externalSoftwareSystemBoundariesVisible" : false,
+      "relationships" : [ {
+        "id" : "7"
+      }, {
+        "id" : "8"
+      }, {
+        "id" : "9"
+      } ],
+      "elements" : [ {
+        "id" : "1",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "2",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "5",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "6",
+        "x" : 0,
+        "y" : 0
+      } ]
+    } ],
+    "componentViews" : [ {
+      "key" : "Components",
+      "order" : 3,
+      "description" : "Visão dos componentes da API HealthCheck",
+      "automaticLayout" : {
+        "implementation" : "Dagre",
+        "rankDirection" : "TopBottom",
+        "rankSeparation" : 300,
+        "nodeSeparation" : 600,
+        "edgeSeparation" : 200,
+        "vertices" : false
+      },
+      "containerId" : "5",
+      "externalContainerBoundariesVisible" : false,
+      "relationships" : [ {
+        "id" : "18"
+      }, {
+        "id" : "29"
+      }, {
+        "id" : "28"
+      }, {
+        "id" : "27"
+      }, {
+        "id" : "26"
+      }, {
+        "id" : "23"
+      }, {
+        "id" : "22"
+      }, {
+        "id" : "21"
+      }, {
+        "id" : "20"
+      }, {
+        "id" : "19"
+      } ],
+      "elements" : [ {
+        "id" : "11",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "12",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "1",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "13",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "2",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "14",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "15",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "16",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "17",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "10",
+        "x" : 0,
+        "y" : 0
+      } ]
+    } ],
+    "configuration" : {
+      "branding" : { },
+      "styles" : {
+        "elements" : [ {
+          "tag" : "Person",
+          "background" : "#08427b",
+          "color" : "#ffffff",
+          "shape" : "Person"
+        }, {
+          "tag" : "Software System",
+          "background" : "#1168bd",
+          "color" : "#ffffff"
+        }, {
+          "tag" : "Container",
+          "background" : "#438dd5",
+          "color" : "#ffffff"
+        }, {
+          "tag" : "Component",
+          "background" : "#85bbf0",
+          "color" : "#000000"
+        }, {
+          "tag" : "Database",
+          "shape" : "Cylinder"
+        } ]
+      },
+      "terminology" : { }
+    }
+  }
+}

@@ -40,3 +40,21 @@ HealthCheck API é um sistema backend para um aplicativo de vigilância epidemio
 
 ## Geocodificação Integrada
 A API integra-se com o serviço Geoapify para converter automaticamente endereços em coordenadas geográficas (latitude e longitude), permitindo a visualização precisa dos focos de doenças em mapas interativos. Esta funcionalidade está implementada no CaseServiceImpl e utiliza uma chave de API configurada no arquivo de propriedades da aplicação.
+
+## Explicação usando como base alguns conceitos do modelo C4
+
+### Diagrama de Contexto
+![Diagrama de Contexto](https://github.com/LuigiBelanda/HealthCheck/tree/master/Outros/structurizr-SystemContext.png)
+
+### Diagrama de Contêineres
+![Diagrama de Contêineres](docs/diagrams/structurizr-Containers.png)
+
+### Diagrama de Componentes
+![Diagrama de Componentes](docs/diagrams/structurizr-Components.png)
+
+O modelo C4 foi utilizado para descrever os níveis de abstração da aplicação:
+
+- **Contexto**: Visão geral do sistema e os atores que interagem com ele.
+- **Contêineres**: Estrutura lógica da aplicação, incluindo API, banco de dados e serviços externos.
+- **Componentes**: Divisão interna da API, destacando serviços, controladores e repositórios.
+

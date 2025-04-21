@@ -40,5 +40,3 @@ Geocodificação: Conversão automática de endereços em coordenadas geográfic
 
 ## Geocodificação Integrada
 A API integra-se com o serviço Geoapify para converter automaticamente endereços em coordenadas geográficas (latitude e longitude), permitindo a visualização precisa dos focos de doenças em mapas interativos. Esta funcionalidade está implementada no CaseServiceImpl e utiliza uma chave de API configurada no arquivo de propriedades da aplicação.
-
-## Demonstração da API
